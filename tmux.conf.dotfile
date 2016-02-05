@@ -22,7 +22,7 @@ bind-key s split-window -v
 bind r source-file ~/.tmux.conf
 
 # No delay for escape key press
-# set -sg escape-time 0
+set -s escape-time 0
 
 ##################################################################
 #### COLOUR (Solarized dark)

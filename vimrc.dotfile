@@ -38,7 +38,7 @@ Plugin 'othree/html5.vim'
 
 " Plugins for JavaScript
 Plugin 'pangloss/vim-javascript'
-Plugin 'jelera/vim-javascript-syntax'
+" Plugin 'jelera/vim-javascript-syntax'
 Plugin 'heavenshell/vim-jsdoc'
 
 " Plugins for nodejs
@@ -209,3 +209,6 @@ let g:pymode_virtualenv=1 " Auto fix vim python paths if virtualenv enabled
 " let g:pymode_rope_guess_project=0
 " let g:pymode_doc_key="<leader>k"  " used jedi-vim for help
 let g:pymode_run_bind = '<leader>R'
+
+let g:jsdoc_enable_es6=1
+" let g:syntastic_javascript_checkers=['eslint']
