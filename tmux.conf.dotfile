@@ -15,14 +15,20 @@ bind-key -n M-S-Up resize-pane -U
 bind-key -n M-S-Down resize-pane -D
 
 # Use vim like split commands
-bind-key v split-window -h
-bind-key s split-window -v
+bind-key v split-window -h -c "#{pane_current_path}"
+bind-key s split-window -v -c "#{pane_current_path}"
 
 # Reload tmux config
 bind r source-file ~/.tmux.conf
 
 # No delay for escape key press
 set -s escape-time 0
+
+# set vi key bindings
+set-window-option -g mode-keys vi
+
+# to open new windows in the current path
+bind c new-window -c "#{pane_current_path}"
 
 ##################################################################
 #### COLOUR (Solarized dark)

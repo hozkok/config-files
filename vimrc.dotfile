@@ -48,6 +48,9 @@ Plugin 'moll/vim-node'
 " Plugin for Git integration
 Plugin 'tpope/vim-fugitive'
 
+" Plugin for auto session creation
+Plugin 'tpope/vim-obsession'
+
 " plugins for vim-snipmate
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
@@ -66,7 +69,6 @@ Plugin 'vim-erlang/vim-erlang-runtime'
 " Plugins for elixir lang
 Plugin 'elixir-lang/vim-elixir'
 
-
 "Plugins for Clojure lang
 Plugin 'guns/vim-clojure-static'
 Plugin 'tpope/vim-fireplace'
@@ -74,6 +76,16 @@ Plugin 'tpope/vim-salve'
 Plugin 'tpope/vim-projectionist'
 Plugin 'tpope/vim-dispatch'
 
+"Plugins for Haskell
+" cabal install ghc-mod
+" add ~/.cabal/bin to $PATH
+" run `make` for vimproc in plugin dir in order to install
+Plugin 'Shougo/vimproc.vim'
+Plugin 'eagletmt/ghcmod-vim'
+let g:haskellmode_completion_ghc=0
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+let g:necoghc_enable_detailed_browse = 1
+Plugin 'eagletmt/neco-ghc'
 
 call vundle#end()
 " ---- /vundle configurations/ ----
@@ -123,9 +135,29 @@ set autoindent
 
 " Disable stupid backup and swap files - they trigger too many events
 " for file system watchers
-set nobackup
-set nowritebackup
-set noswapfile
+" set nobackup
+" set nowritebackup
+" set noswapfile
+
+" set swap and backup directories, double slash prevents name collisions
+silent !mkdir -p ~/.vim/backup ~/.vim/swap ~/.vim/undo
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swap//
+set undodir=~/.vim/undo//
+
+" show invisible tab indicator characters
+" set listchars=tab:▸\ ,
+" nmap <leader>l :set list!<CR>
+
+" navigate between wrapped lines
+nmap <silent> k gk
+imap <silent> <C-o>k <C-o>gk
+nmap <silent> j gj
+imap <silent> <C-o>j <C-o>gj
+nmap <silent> ^ g<Home>
+imap <silent> <C-o>^ <C-o>g<Home>
+nmap <silent> $ g<End>
+imap <silent> <C-o>$ <C-o>g<End>
 
 " easier moving of code blocks
 " Try to go into visual mode (v), thenselect several lines of code here and
