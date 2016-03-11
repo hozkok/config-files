@@ -14,7 +14,7 @@ call vundle#begin()
 
 " Plugin for colorscheme
 """
-" Plugin 'altercation/vim-colors-solarized'
+Plugin 'altercation/vim-colors-solarized'
 Plugin 'flazz/vim-colorschemes'
 """
 
@@ -205,7 +205,12 @@ if (has("python3"))
     let g:jedi#force_py_version = 3
 endif
 
-colorscheme 256-jungle
+" colorscheme 256-jungle
+syntax enable
+set t_Co=256
+let g:solarized_termcolors=256
+set background=dark
+colorscheme solarized
 
 " set colorscheme to solarized
 " (make sure to install altercation/vim-colors-solarized first.)
