@@ -19,7 +19,7 @@ Plugin 'flazz/vim-colorschemes'
 """
 
 " fast file navigation (must have vim plugin)
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 
 " git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 Plugin 'gmarik/Vundle.vim'
@@ -150,14 +150,14 @@ set undodir=~/.vim/undo//
 " nmap <leader>l :set list!<CR>
 
 " navigate between wrapped lines
-nmap <silent> k gk
-imap <silent> <C-o>k <C-o>gk
-nmap <silent> j gj
-imap <silent> <C-o>j <C-o>gj
-nmap <silent> ^ g<Home>
-imap <silent> <C-o>^ <C-o>g<Home>
-nmap <silent> $ g<End>
-imap <silent> <C-o>$ <C-o>g<End>
+" nmap <silent> k gk
+" imap <silent> <C-o>k <C-o>gk
+" nmap <silent> j gj
+" imap <silent> <C-o>j <C-o>gj
+" nmap <silent> ^ g<Home>
+" imap <silent> <C-o>^ <C-o>g<Home>
+" nmap <silent> $ g<End>
+" imap <silent> <C-o>$ <C-o>g<End>
 
 " easier moving of code blocks
 " Try to go into visual mode (v), thenselect several lines of code here and
@@ -249,3 +249,6 @@ let g:pymode_run_bind = '<leader>R'
 
 let g:jsdoc_enable_es6=1
 " let g:syntastic_javascript_checkers=['eslint']
+
+" use python3 for syntastic
+let g:syntastic_python_python_exec='python3'
