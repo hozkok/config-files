@@ -28,7 +28,6 @@ Plugin 'davidhalter/jedi-vim'
 Plugin 'klen/python-mode'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
-Plugin 'Raimondi/delimitMate'
 Plugin 'nvie/vim-flake8'
 Plugin 'bling/vim-airline'
 
@@ -104,6 +103,9 @@ set diffopt+=vertical
 " show relative line numbers on bot and top
 set relativenumber
 set number
+
+" cause vim to move the cursor to the previous matching bracket for half a second
+set showmatch
 
 " always display the statusline
 set laststatus=2
@@ -252,3 +254,8 @@ let g:jsdoc_enable_es6=1
 
 " use python3 for syntastic
 let g:syntastic_python_python_exec='python3'
+
+" ctrlp only look for directory of current file.
+let g:ctrlp_working_path_mode = 'a'
+
+" haskell configuration
