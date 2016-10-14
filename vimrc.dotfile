@@ -1,93 +1,92 @@
-" ---- vundle configurations ----
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
 
-" For Windows
-" set rtp+=~/vimfiles/bundle/Vundle.vim
-" let path='~/vimfiles/bundle'
-" call vundle#begin(path)
+" WARNING: Install vim-plug with the following code,
+" otherwise, vim will not work.
+"
+"curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" -*- VIM PLUG BEGIN -*-
+call plug#begin('~/.vim/plugged')
 
-
-" Plugins...
-
-" Plugin for colorscheme
-"""
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'flazz/vim-colorschemes'
-"""
+" Plugins for colorscheme
+Plug 'altercation/vim-colors-solarized'
+Plug 'flazz/vim-colorschemes'
 
 " fast file navigation (must have vim plugin)
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 
-" git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-Plugin 'gmarik/Vundle.vim'
+" universal vim settings
+Plug 'tpope/vim-sensible'
 
-Plugin 'davidhalter/jedi-vim'
-Plugin 'klen/python-mode'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
-Plugin 'nvie/vim-flake8'
-Plugin 'bling/vim-airline'
+" Vim async tasks support
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+
+Plug 'davidhalter/jedi-vim'
+Plug 'klen/python-mode'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'
+Plug 'nvie/vim-flake8'
+Plug 'bling/vim-airline'
 
 " Plugins for HTML
-Plugin 'othree/html5-syntax.vim'
-Plugin 'othree/html5.vim'
+Plug 'othree/html5-syntax.vim'
+Plug 'othree/html5.vim'
 
 " Plugins for JavaScript
-Plugin 'pangloss/vim-javascript'
-" Plugin 'jelera/vim-javascript-syntax'
-Plugin 'heavenshell/vim-jsdoc'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'heavenshell/vim-jsdoc'
+Plug 'Quramy/vim-js-pretty-template'
 
 " Plugins for nodejs
-Plugin 'marijnh/tern_for_vim'
-Plugin 'moll/vim-node'
+Plug 'marijnh/tern_for_vim'
+Plug 'moll/vim-node'
+
+" Plugins for TypeScript
+Plug 'Quramy/tsuquyomi'
+Plug 'leafgarland/typescript-vim'
 
 " Plugin for Git integration
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
 " Plugin for auto session creation
-Plugin 'tpope/vim-obsession'
+Plug 'tpope/vim-obsession'
 
 " plugins for vim-snipmate
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
-Plugin 'honza/vim-snippets'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+Plug 'honza/vim-snippets'
 
-Plugin 'digitaltoad/vim-jade'
-" --
-"
+Plug 'digitaltoad/vim-jade'
 
 "Plugins for erlang
-Plugin 'vim-erlang/vim-erlang-omnicomplete'
-Plugin 'vim-erlang/vim-erlang-compiler'
-Plugin 'vim-erlang/vim-erlang-runtime'
+Plug 'vim-erlang/vim-erlang-omnicomplete'
+Plug 'vim-erlang/vim-erlang-compiler'
+Plug 'vim-erlang/vim-erlang-runtime'
 
 " Plugins for elixir lang
-Plugin 'elixir-lang/vim-elixir'
+Plug 'elixir-lang/vim-elixir'
 
 "Plugins for Clojure lang
-Plugin 'guns/vim-clojure-static'
-Plugin 'tpope/vim-fireplace'
-Plugin 'tpope/vim-salve'
-Plugin 'tpope/vim-projectionist'
-Plugin 'tpope/vim-dispatch'
+Plug 'guns/vim-clojure-static'
+Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-salve'
+Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-dispatch'
 
 "Plugins for Haskell
 " cabal install ghc-mod
 " add ~/.cabal/bin to $PATH
-" run `make` for vimproc in plugin dir in order to install
-Plugin 'Shougo/vimproc.vim'
-Plugin 'eagletmt/ghcmod-vim'
+Plug 'eagletmt/ghcmod-vim'
 let g:haskellmode_completion_ghc=0
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 let g:necoghc_enable_detailed_browse = 1
-Plugin 'eagletmt/neco-ghc'
+Plug 'eagletmt/neco-ghc'
 
-call vundle#end()
-" ---- /vundle configurations/ ----
+call plug#end()
+" -*- VIM-PLUG END -*-
 
 
 set foldmethod=indent
@@ -249,8 +248,11 @@ let g:pymode_virtualenv=1 " Auto fix vim python paths if virtualenv enabled
 " let g:pymode_doc_key="<leader>k"  " used jedi-vim for help
 let g:pymode_run_bind = '<leader>R'
 
+let g:syntastic_javascript_checkers=['eslint']
 let g:jsdoc_enable_es6=1
-" let g:syntastic_javascript_checkers=['eslint']
+
+" enable jsx syntax highlighting in js files too
+let g:jsx_ext_required=0
 
 " use python3 for syntastic
 let g:syntastic_python_python_exec='python3'
