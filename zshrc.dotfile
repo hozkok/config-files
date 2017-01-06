@@ -49,7 +49,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git nmap)
+plugins=(git nmap extract)
 
 # User configuration
 
@@ -58,13 +58,18 @@ PATH=$PATH:~/.cabal/bin/
 PATH=$PATH:~/Android/Sdk/tools
 PATH=$PATH:~/Android/Sdk/platform-tools
 PATH=$PATH:~/bin
+PATH=$PATH:~/.local/bin
 
 alias mongod-start='mongod --dbpath ~/csdev/db'
 alias android-studio='~/csdev/android-studio/bin/studio.sh & exit'
 
+alias racket='~/csdev/scheme/racket/bin/racket'
+
 alias tmux='tmux -2'
 
 alias sudo='sudo'
+
+alias tor-browser='~/tor/Browser/start-tor-browser'
 
 export ANDROID_HOME=/home/zeawee/Android/Sdk
 
@@ -99,3 +104,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+export NVM_DIR="/home/zeawee/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

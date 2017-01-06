@@ -19,6 +19,10 @@ Plug 'ctrlpvim/ctrlp.vim'
 " universal vim settings
 Plug 'tpope/vim-sensible'
 
+" vimwiki is a personal note taker plugin
+" (trying to make orgmode in vim)
+Plug 'vimwiki/vimwiki'
+
 " Vim async tasks support
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
@@ -45,6 +49,8 @@ Plug 'moll/vim-node'
 
 " Plugins for TypeScript
 Plug 'Quramy/tsuquyomi'
+let g:tsuquyomi_disable_quickfix=1
+let g:syntastic_typescript_checkers=['tsuquyomi']
 Plug 'leafgarland/typescript-vim'
 
 " Plugin for Git integration
@@ -76,6 +82,10 @@ Plug 'tpope/vim-salve'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-dispatch'
 
+" realtime markdown preview tool
+" requires npm install -g instant-markdown-d
+Plug 'suan/vim-instant-markdown', {'do': 'npm install -g instant-markdown-d'}
+
 "Plugins for Haskell
 " cabal install ghc-mod
 " add ~/.cabal/bin to $PATH
@@ -103,7 +113,8 @@ set diffopt+=vertical
 set relativenumber
 set number
 
-" cause vim to move the cursor to the previous matching bracket for half a second
+" cause vim to move the cursor to the previous matching bracket for half a
+" second.
 set showmatch
 
 " always display the statusline
@@ -212,6 +223,8 @@ set t_Co=256
 let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized
+
+set cc=80
 
 " set colorscheme to solarized
 " (make sure to install altercation/vim-colors-solarized first.)
