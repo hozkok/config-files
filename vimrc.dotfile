@@ -18,6 +18,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 
 " universal vim settings
 Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
 
 " vimwiki is a personal note taker plugin
 " (trying to make orgmode in vim)
@@ -44,11 +45,11 @@ Plug 'heavenshell/vim-jsdoc'
 Plug 'Quramy/vim-js-pretty-template'
 
 " Plugins for nodejs
-Plug 'marijnh/tern_for_vim'
+Plug 'marijnh/tern_for_vim', {'do': 'npm install'}
 Plug 'moll/vim-node'
 
 " Plugins for TypeScript
-Plug 'Quramy/tsuquyomi'
+Plug 'Quramy/tsuquyomi', {'do': 'npm install -g typescript'}
 let g:tsuquyomi_disable_quickfix=1
 let g:syntastic_typescript_checkers=['tsuquyomi']
 Plug 'leafgarland/typescript-vim'
@@ -66,6 +67,7 @@ Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 
 Plug 'digitaltoad/vim-jade'
+Plug 'ryanss/vim-hackernews'
 
 "Plugins for erlang
 Plug 'vim-erlang/vim-erlang-omnicomplete'
@@ -107,6 +109,8 @@ let mapleader = ","
 
 " for Gdiff vertical open
 set diffopt+=vertical
+
+autocmd Filetype javascript,typescript,json setlocal ts=2 sts=2 sw=2 expandtab
 
 " show current line absolute number
 " show relative line numbers on bot and top
