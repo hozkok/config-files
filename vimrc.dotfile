@@ -29,9 +29,13 @@ Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'davidhalter/jedi-vim'
 Plug 'klen/python-mode'
 Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
+Plug 'vim-syntastic/syntastic'
 Plug 'nvie/vim-flake8'
 Plug 'bling/vim-airline'
+
+"Auto-completion
+Plug 'Shougo/neocomplete.vim'
+"let g:neocomplete#enable_at_startup=1
 
 " Plugins for HTML
 Plug 'othree/html5-syntax.vim'
@@ -48,16 +52,26 @@ Plug 'marijnh/tern_for_vim'
 Plug 'moll/vim-node'
 
 " Plugins for TypeScript
-Plug 'Quramy/tsuquyomi'
+Plug 'Quramy/tsuquyomi', {'do': 'npm install -g typescript'}
 let g:tsuquyomi_disable_quickfix=1
 let g:syntastic_typescript_checkers=['tsuquyomi']
 Plug 'leafgarland/typescript-vim'
+
+" syntastic always show error location list
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_auto_loc_list=1
+
+" syntastic status line message settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 " Plugin for Git integration
 Plug 'tpope/vim-fugitive'
 
 " Plugin for auto session creation
 Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-surround'
 
 " plugins for vim-snipmate
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -82,9 +96,18 @@ Plug 'tpope/vim-salve'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-dispatch'
 
+" Tabular aligning items
+Plug 'godlygeek/tabular'
+
+" markdown
+" highlight, matching rules and mappings for markdown
+Plug 'plasticboy/vim-markdown'
 " realtime markdown preview tool
 " requires npm install -g instant-markdown-d
 Plug 'suan/vim-instant-markdown', {'do': 'npm install -g instant-markdown-d'}
+
+" handy commenter
+Plug 'scrooloose/nerdcommenter'
 
 "Plugins for Haskell
 " cabal install ghc-mod
@@ -98,6 +121,7 @@ Plug 'eagletmt/neco-ghc'
 call plug#end()
 " -*- VIM-PLUG END -*-
 
+autocmd FileType typescript setlocal sw=2 sts=2 et ts=2
 
 set foldmethod=indent
 set foldlevel=99
@@ -250,7 +274,10 @@ let g:pymode_syntax=0
 let g:pymode_virtualenv=1 " Auto fix vim python paths if virtualenv enabled
 " let g:pymode_folding=1  " Enable python folding
 " let g:pymode_utils_whitespaces=0  " Do not autoremove unused whitespaces
-" let g:pymode_lint_ignore = "C0110 Exported"  " ignore pep257 missing docstring warning
+
+" ignore pep257 missing docstring warning
+" let g:pymode_lint_ignore = "C0110 Exported"
+
 " let g:pymode_lint_minheight = 5   " Minimal height of pylint error window
 " let g:pymode_lint_maxheight = 15  " Maximal height of pylint error window
 " let g:pymode_lint_write = 0  " Disable pylint checking every save
@@ -263,6 +290,7 @@ let g:pymode_run_bind = '<leader>R'
 
 let g:syntastic_javascript_checkers=['eslint']
 let g:jsdoc_enable_es6=1
+autocmd FileType javascript nnoremap <leader>R :!node %<CR>
 
 " enable jsx syntax highlighting in js files too
 let g:jsx_ext_required=0
