@@ -1,3 +1,5 @@
 [user]
-    name = Hakan Ozkok
-    email = hakanozkok@gmail.com
+	name = Ozkok, Hakan
+	email = hakan.ozkok@accenture.com
+[core]
+	editor = /usr/bin/vim
