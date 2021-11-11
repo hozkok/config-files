@@ -5,7 +5,7 @@
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+ZSH_THEME="hozkok"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -53,6 +53,7 @@ plugins=(git nmap extract web-search)
 
 # User configuration
 
+PATH=$HOME/.local/bin/:$PATH
 PATH=$PATH:/usr/lib/nodejs/bin/
 PATH=$PATH:~/bin
 
@@ -61,6 +62,9 @@ alias mongod-start='mongod --dbpath ~/csdev/db'
 alias tmux='tmux -2'
 
 source $ZSH/oh-my-zsh.sh
+
+bindkey -v
+alias vim='nvim'
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -89,3 +93,4 @@ source $ZSH/oh-my-zsh.sh
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+eval "$(pyenv init -)"

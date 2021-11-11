@@ -1,0 +1,445 @@
+set nocompatible
+filetype off
+
+" WARNING: Install vim-plug with the following code,
+" otherwise, vim will not work.
+"
+"curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" -*- VIM PLUG BEGIN -*-
+call plug#begin(stdpath('data') . '/plugged')
+
+
+" Plugins for using tags
+function! BuildVimTags(info)
+  if a:info.status != 'installed'
+    return 0
+  endif
+  if has('macunix')
+    !brew install ctags
+  else
+    !sudo apt-get install exuberant-ctags
+  endif
+endfunction
+Plug 'majutsushi/tagbar', { 'do': function('BuildVimTags') }
+"Plug 'ludovicchabant/vim-gutentags'
+
+
+" Plugins for colorscheme
+Plug 'altercation/vim-colors-solarized'
+
+" fast file navigation
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
+" universal vim settings
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+
+" vimwiki is a personal note taker plugin
+" (trying to make orgmode in vim)
+Plug 'vimwiki/vimwiki'
+""" 
+""" " Vim async tasks support
+""" " Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+
+Plug 'davidhalter/jedi-vim', { 'do': 'git submodule update --init', 'for': 'python' }
+""" 
+""" " IPython integration
+Plug 'ivanov/vim-ipython'
+""" 
+""" " Plug 'klen/python-mode'
+Plug 'scrooloose/nerdtree'
+" Plug 'vim-syntastic/syntastic'
+Plug 'neomake/neomake'
+""" 
+" better python indentation
+Plug 'Vimjas/vim-python-pep8-indent'
+""" " plugin for python pep8 checking
+Plug 'nvie/vim-flake8', {'for': 'python'}
+""" 
+""" 
+Plug 'vim-airline/vim-airline'
+Plug 'yuttie/comfortable-motion.vim'
+
+Plug 'sotte/presenting.vim'
+Plug 'rbong/vim-flog'
+
+"Auto-completion
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    let g:deoplete#enable_at_startup = 1
+    Plug 'zchee/deoplete-jedi', { 'do': 'git submodule update --init' }
+    Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+    Plug 'sebastianmarkow/deoplete-rust'
+    let g:deoplete#sources#rust#racer_binary=$HOME .'/.cargo/bin/racer'
+    let g:deoplete#sources#rust#rust_source_path=$HOME . '/rust/src'
+    let g:deoplete#sources#ternjs#filetypes = [
+                \ 'jsx',
+                \ 'javascript.jsx',
+                \ 'vue',
+                \ ]
+endif
+
+" Plugins for HTML
+Plug 'othree/html5-syntax.vim', { 'for': 'html' }
+Plug 'othree/html5.vim', { 'for': 'html' }
+
+" Plugins for JavaScript
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'heavenshell/vim-jsdoc'
+Plug 'Quramy/vim-js-pretty-template'
+
+" Plugins for nodejs
+Plug 'ternjs/tern_for_vim', {'do': 'npm install'}
+Plug 'moll/vim-node'
+
+" Plugins for TypeScript
+Plug 'Quramy/tsuquyomi', {'do': 'npm install -g typescript'}
+let g:tsuquyomi_disable_quickfix=1
+let g:syntastic_typescript_checkers=['tsuquyomi']
+Plug 'leafgarland/typescript-vim'
+
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" syntastic always show error location list
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_auto_loc_list=1
+" syntastic status line message settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+""" 
+" YouCompleteMe, generic completer
+" Plug 'Valloric/YouCompleteMe', {'do': './install.py --clang-completer --java-completer --js-completer'}
+""" 
+" Plugin for Git integration
+Plug 'tpope/vim-fugitive'
+""" 
+" Plugin for auto session creation
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-surround'
+""" 
+" plugins for vim-snipmate
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+Plug 'honza/vim-snippets'
+""" 
+"Plugins for erlang
+Plug 'vim-erlang/vim-erlang-omnicomplete'
+Plug 'vim-erlang/vim-erlang-compiler'
+Plug 'vim-erlang/vim-erlang-runtime'
+""" 
+
+" Plugins for elixir lang
+Plug 'elixir-editors/vim-elixir'
+Plug 'slashmili/alchemist.vim'
+""" 
+
+
+""" Plugins for rust-lang
+Plug 'rust-lang/rust.vim'
+"""
+
+""" Plugins for Clojure lang
+Plug 'guns/vim-clojure-static'
+Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-salve'
+Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-dispatch'
+"""
+
+" Tabular aligning items
+Plug 'godlygeek/tabular'
+
+" markdown
+" highlight, matching rules and mappings for markdown
+Plug 'plasticboy/vim-markdown'
+" realtime markdown preview tool
+" requires npm install -g instant-markdown-d
+Plug 'suan/vim-instant-markdown', {'do': 'npm install -g instant-markdown-d'}
+""" 
+" handy commenter
+Plug 'scrooloose/nerdcommenter'
+let g:NERDDefaultAlign = 'left'
+""" 
+"Plugins for Haskell
+" cabal install ghc-mod
+" add ~/.cabal/bin to $PATH
+Plug 'eagletmt/ghcmod-vim'
+let g:haskellmode_completion_ghc=0
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+let g:necoghc_enable_detailed_browse = 1
+Plug 'eagletmt/neco-ghc'
+
+call plug#end()
+" -*- VIM-PLUG END -*-
+
+set foldmethod=indent
+set foldlevel=99
+
+" setting <leader> key to comma
+let mapleader = ","
+
+" for Gdiff vertical open
+set diffopt+=vertical
+
+" autocmd Filetype javascript,typescript,json,yaml,html setlocal ts=2 sts=2 sw=2 expandtab
+
+" language specific indentation and character rules
+au BufNewFile,BufRead *.js,*.html,*.css,*.ts,*.yml,*.yaml,*.json
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2 |
+    \ set expandtab
+
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set expandtab |
+    \ set smarttab
+
+" show current line absolute number
+" show relative line numbers on bot and top
+set relativenumber
+set number
+
+set updatetime=500
+
+" cause vim to move the cursor to the previous matching bracket for half a
+" second.
+set showmatch
+
+" always display the statusline
+set laststatus=2
+
+" Make search case insensitive
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+" tab configuration
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set smarttab
+set expandtab
+
+" word wrap
+set wrap
+set linebreak
+set nolist
+set textwidth=0
+set wrapmargin=0
+
+set backspace=indent,eol,start
+
+" indentation
+set autoindent
+
+" easier buffer switching
+nnoremap <Leader>b :ls<CR>:b<Space>
+
+" Disable stupid backup and swap files - they trigger too many events
+" for file system watchers
+" set nobackup
+" set nowritebackup
+" set noswapfile
+
+" set swap and backup directories, double slash prevents name collisions
+silent !mkdir -p ~/.vim/backup ~/.vim/swap ~/.vim/undo
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swap//
+set undodir=~/.vim/undo//
+
+" show invisible tab indicator characters
+" set listchars=tab:▸\ ,
+" nmap <leader>l :set list!<CR>
+
+" navigate between wrapped lines
+" nmap <silent> k gk
+" imap <silent> <C-o>k <C-o>gk
+" nmap <silent> j gj
+" imap <silent> <C-o>j <C-o>gj
+" nmap <silent> ^ g<Home>
+" imap <silent> <C-o>^ <C-o>g<Home>
+" nmap <silent> $ g<End>
+" imap <silent> <C-o>$ <C-o>g<End>
+
+" easier moving of code blocks
+" Try to go into visual mode (v), thenselect several lines of code here and
+" then press ``>`` several times.
+vnoremap < <gv  " better indentation
+vnoremap > >gv  " better indentation
+
+" to easily move though windows
+noremap <c-j> <c-w>j
+noremap <c-k> <c-w>k
+noremap <c-l> <c-w>l
+noremap <c-h> <c-w>h
+
+" gundo plugin shortcut
+map <leader>G :GundoToggle<CR>
+
+" NERDTree plugin shortcut
+map <C-n> :NERDTreeToggle<CR>
+
+" jedi-vim configuration
+let g:jedi#popup_on_dot = 0
+let g:jedi#show_call_signatures = "0"
+
+" vimwiki file format and path configuration
+" let g:vimwiki_list = [{
+"             \ 'path': '~/vimwiki',
+"             \ 'syntax': 'markdown',
+"             \ 'ext': '.md',
+"             \ }]
+" let g:vimwiki_ext2syntax = {'.md': 'markdown'}
+
+
+syntax on " syntax highlighting
+filetype on " try to detect filetypes
+
+" use python instead of python3 for tern support
+" if(has("python"))
+"     " enable tern shortcuts
+"     let g:tern_map_keys=1
+"     map <leader>td :TernDoc<CR>
+"     map <leader>tb :TernDocBrowse<CR>
+"     map <leader>tt :TernType<CR>
+"     map <leader>tD :TernDef<CR>
+"     map <leader>tpd :TernDefPreview<CR>
+"     map <leader>tsd :TernDefSplit<CR>
+"     map <leader>ttd :TernDefTab<CR>
+"     map <leader>tr :TernRefs<CR>
+"     map <leader>tR :TernRename<CR>
+" endif
+
+if (has("python3"))
+    let g:jedi#force_py_version = 3
+endif
+if (has('nvim'))
+    let g:python3_host_prog = '/Users/hakan.ozkok/.pyenv/shims/python3'
+endif
+
+" colorscheme 256-jungle
+syntax enable
+set t_Co=256
+let g:solarized_termcolors=256
+set background=dark
+colorscheme solarized
+
+set cc=80
+
+" set colorscheme to solarized
+" (make sure to install altercation/vim-colors-solarized first.)
+" set background=dark
+" let g:solarized_termtrans=1
+" set t_Co=16
+" colorscheme solarized
+
+filetype plugin indent on " enable loading indent file for filetype
+
+
+
+
+" tell syntastic to use native python checker
+" let g:syntastic_python_checkers = ['python', 'mypy']
+"let g:neomake_python_enabled_makers = ['python']
+call neomake#configure#automake('nrwi', 500)
+
+" python-mode configuration
+" let g:pymode=0
+" let g:pymode_indent=0
+" let g:pymode_motion=0
+" let g:pymode_doc=0
+" let g:pymode_breakpoint=1
+" let g:pymode_lint=0
+" let g:pymode_rope=0
+" let g:pymode_syntax=0
+" let g:pymode_virtualenv=1 " Auto fix vim python paths if virtualenv enabled
+" let g:pymode_folding=1  " Enable python folding
+" let g:pymode_utils_whitespaces=0  " Do not autoremove unused whitespaces
+
+" ignore pep257 missing docstring warning
+" let g:pymode_lint_ignore = "C0110 Exported"
+
+" let g:pymode_lint_minheight = 5   " Minimal height of pylint error window
+" let g:pymode_lint_maxheight = 15  " Maximal height of pylint error window
+" let g:pymode_lint_write = 0  " Disable pylint checking every save
+" let g:pymode_run_key = "<leader>run"  " default key conflicts with jedi-vim
+" let g:pymode_syntax_highlight_self=0  " do not highlight self
+" let g:pymode_rope_vim_completion=0  " use jedi-vim for completion
+" let g:pymode_rope_guess_project=0
+" let g:pymode_doc_key="<leader>k"  " used jedi-vim for help
+" let g:pymode_run_bind = '<leader>R'
+
+" syntastic rules
+let g:syntastic_javascript_checkers=['eslint']
+let syntastic_mode_map = { 'passive_filetypes': ['html'] }
+let g:jsdoc_enable_es6=1
+autocmd FileType javascript nnoremap <leader>R :!node %<CR>
+
+" enable jsx syntax highlighting in js files too
+let g:jsx_ext_required=0
+
+" use python3 for syntastic
+let g:syntastic_python_python_exec='python3'
+
+" === CtrlP Configurations ===
+" ctrlp only look for directory of current file.
+let g:ctrlp_working_path_mode = 'a'
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_custom_ignore = 'node_modules\|.venv'
+
+
+let g:snipMate = { 'snippet_version' : 1 }
+
+" haskell configuration
+
+" Enable project specific .vimrc files
+"set exrc
+"set secure
+"
+"
+let g:tagbar_type_markdown = {
+    \ 'ctagstype' : 'markdown',
+    \ 'kinds' : [
+        \ 'h:Heading_L1',
+        \ 'i:Heading_L2',
+        \ 'k:Heading_L3',
+        \ 'l:Heading_L4',
+        \ 'm:Heading_L5'
+    \ ]
+\ }
+
+let g:vimwiki_list = [{},
+            \ {'path': '~/accenture/intents/wiki/'}]
+
+
+" coc-nvim settings
+
+" function! s:check_back_space() abort
+"     let col = col('.') - 1
+"     return !col || getline('.')[col - 1] =~# '\s'
+" endfunction
+" 
+" nmap <silent> <leader>d <Plug>(coc-definition)
+" nmap <silent> <leader>y <Plug>(coc-type-definition)
+" nmap <silent> <leader>i <Plug>(coc-implementation)
+" nmap <silent> <leader>gr <Plug>(coc-references)
+" nmap <silent> <leader>r <Plug>(coc-rename)
+" 
+" nnoremap <silent> K :call <SID>show_documentation()<CR>
+" 
+" function! s:show_documentation()
+"     if (index(['vim','help'], &filetype) >= 0)
+"         execute 'h '.expand('<cword>')
+"     else
+"         call CocAction('doHover')
+"     endif
+" endfunction
