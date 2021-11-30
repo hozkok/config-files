@@ -1,4 +1,5 @@
 [user]
-	name = Ozkok, Hakan
+	name = hakan
+	email = hakan@telnyx.com
 [core]
 	editor = /usr/bin/vim

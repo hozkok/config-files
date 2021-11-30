@@ -18,6 +18,8 @@ bind-key -n M-S-Down resize-pane -D
 bind-key v split-window -h -c "#{pane_current_path}"
 bind-key s split-window -v -c "#{pane_current_path}"
 
+bind C-j choose-tree
+
 # Reload tmux config
 bind r source-file ~/.tmux.conf
 

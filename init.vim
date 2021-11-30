@@ -159,7 +159,7 @@ Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 " realtime markdown preview tool
 " requires npm install -g instant-markdown-d
-Plug 'suan/vim-instant-markdown', {'do': 'npm install -g instant-markdown-d'}
+" Plug 'suan/vim-instant-markdown', {'do': 'npm install -g instant-markdown-d'}
 """ 
 " handy commenter
 Plug 'scrooloose/nerdcommenter'
@@ -293,11 +293,9 @@ let g:jedi#popup_on_dot = 0
 let g:jedi#show_call_signatures = "0"
 
 " vimwiki file format and path configuration
-" let g:vimwiki_list = [{
-"             \ 'path': '~/vimwiki',
-"             \ 'syntax': 'markdown',
-"             \ 'ext': '.md',
-"             \ }]
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                      \'syntax': 'markdown', 'ext': '.md'}]
+let g:vimwiki_global_ext = 0
 " let g:vimwiki_ext2syntax = {'.md': 'markdown'}
 
 
@@ -323,7 +321,7 @@ if (has("python3"))
     let g:jedi#force_py_version = 3
 endif
 if (has('nvim'))
-    let g:python3_host_prog = '/Users/hakan.ozkok/.pyenv/shims/python3'
+    let g:python3_host_prog = $HOME . '/.pyenv/shims/python3'
 endif
 
 " colorscheme 256-jungle
@@ -416,9 +414,6 @@ let g:tagbar_type_markdown = {
         \ 'm:Heading_L5'
     \ ]
 \ }
-
-let g:vimwiki_list = [{},
-            \ {'path': '~/accenture/intents/wiki/'}]
 
 
 " coc-nvim settings

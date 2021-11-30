@@ -49,7 +49,9 @@ ZSH_THEME="hozkok"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git nmap extract web-search)
+
+# fzf and vi-mode order is important, vi-mode overrides <C-R>
+plugins=(git nmap extract web-search kubectl vi-mode fzf)
 
 # User configuration
 
@@ -63,8 +65,13 @@ alias tmux='tmux -2'
 
 source $ZSH/oh-my-zsh.sh
 
-bindkey -v
 alias vim='nvim'
+
+alias clipcopy='xclip -sel clip'
+alias clippaste='xclip -o'
+alias activate='source .venv/bin/activate'
+
+setopt ignoreeof
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
