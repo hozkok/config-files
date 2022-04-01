@@ -7,4 +7,5 @@ for dotfile in *.dotfile; do
 done
 
 ln -s $SCRIPT_DIR/init.vim $HOME/.config/nvim/init.vim
+ln -s $SCRIPT_DIR/coc-settings.json $HOME/.config/nvim/coc-settings.json
 ln -s $SCRIPT_DIR/hozkok.zsh-theme $HOME/.oh-my-zsh/custom/themes/hozkok.zsh-theme

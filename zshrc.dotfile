@@ -101,3 +101,11 @@ setopt ignoreeof
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 eval "$(pyenv init -)"
+
+# kubectl plugin manager
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+alias kubectx='kubectl ctx'
+alias kubens='kubectl ns'
+
+# Access custom aliases in the shell
+[ -e "${HOME}/.zsh_aliases" ] && source "${HOME}/.zsh_aliases"

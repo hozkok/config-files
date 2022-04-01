@@ -43,7 +43,7 @@ Plug 'vimwiki/vimwiki'
 """ " Vim async tasks support
 """ " Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
-Plug 'davidhalter/jedi-vim', { 'do': 'git submodule update --init', 'for': 'python' }
+"Plug 'davidhalter/jedi-vim', { 'do': 'git submodule update --init', 'for': 'python' }
 """ 
 """ " IPython integration
 Plug 'ivanov/vim-ipython'
@@ -51,7 +51,7 @@ Plug 'ivanov/vim-ipython'
 """ " Plug 'klen/python-mode'
 Plug 'scrooloose/nerdtree'
 " Plug 'vim-syntastic/syntastic'
-Plug 'neomake/neomake'
+"Plug 'neomake/neomake'
 """ 
 " better python indentation
 Plug 'Vimjas/vim-python-pep8-indent'
@@ -67,18 +67,18 @@ Plug 'rbong/vim-flog'
 
 "Auto-completion
 if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    let g:deoplete#enable_at_startup = 1
-    Plug 'zchee/deoplete-jedi', { 'do': 'git submodule update --init' }
-    Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-    Plug 'sebastianmarkow/deoplete-rust'
-    let g:deoplete#sources#rust#racer_binary=$HOME .'/.cargo/bin/racer'
-    let g:deoplete#sources#rust#rust_source_path=$HOME . '/rust/src'
-    let g:deoplete#sources#ternjs#filetypes = [
-                \ 'jsx',
-                \ 'javascript.jsx',
-                \ 'vue',
-                \ ]
+    "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    "let g:deoplete#enable_at_startup = 1
+    "Plug 'zchee/deoplete-jedi', { 'do': 'git submodule update --init' }
+    "Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+    "Plug 'sebastianmarkow/deoplete-rust'
+    "let g:deoplete#sources#rust#racer_binary=$HOME .'/.cargo/bin/racer'
+    "let g:deoplete#sources#rust#rust_source_path=$HOME . '/rust/src'
+    "let g:deoplete#sources#ternjs#filetypes = [
+    "            \ 'jsx',
+    "            \ 'javascript.jsx',
+    "            \ 'vue',
+    "            \ ]
 endif
 
 " Plugins for HTML
@@ -101,7 +101,8 @@ let g:tsuquyomi_disable_quickfix=1
 let g:syntastic_typescript_checkers=['tsuquyomi']
 Plug 'leafgarland/typescript-vim'
 
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 
 " syntastic always show error location list
 let g:syntastic_always_populate_loc_list=1
@@ -277,10 +278,10 @@ vnoremap < <gv  " better indentation
 vnoremap > >gv  " better indentation
 
 " to easily move though windows
-noremap <c-j> <c-w>j
-noremap <c-k> <c-w>k
-noremap <c-l> <c-w>l
-noremap <c-h> <c-w>h
+nmap <C-j> <c-w>j
+nmap <C-k> <c-w>k
+nmap <C-l> <c-w>l
+nmap <C-h> <c-w>h
 
 " gundo plugin shortcut
 map <leader>G :GundoToggle<CR>
@@ -348,7 +349,7 @@ filetype plugin indent on " enable loading indent file for filetype
 " tell syntastic to use native python checker
 " let g:syntastic_python_checkers = ['python', 'mypy']
 "let g:neomake_python_enabled_makers = ['python']
-call neomake#configure#automake('nrwi', 500)
+"call neomake#configure#automake('nrwi', 500)
 
 " python-mode configuration
 " let g:pymode=0
@@ -415,26 +416,48 @@ let g:tagbar_type_markdown = {
     \ ]
 \ }
 
+"if (has("termguicolors"))
+"  set termguicolors
+"endif
 
 " coc-nvim settings
-
+"autocmd CursorHold * silent call CocActionAsync('highlight') 
+"hi default link CocHighlightText CursorColumn
+"hi CocUnderline gui=underline term=underline
+"hi CocErrorHighlight ctermfg=red  guifg=#c4384b gui=undercurl term=undercurl
+"hi CocWarningHighlight ctermfg=yellow guifg=#c4ab39 gui=undercurl term=undercurl
 " function! s:check_back_space() abort
 "     let col = col('.') - 1
 "     return !col || getline('.')[col - 1] =~# '\s'
 " endfunction
 " 
-" nmap <silent> <leader>d <Plug>(coc-definition)
-" nmap <silent> <leader>y <Plug>(coc-type-definition)
-" nmap <silent> <leader>i <Plug>(coc-implementation)
-" nmap <silent> <leader>gr <Plug>(coc-references)
-" nmap <silent> <leader>r <Plug>(coc-rename)
-" 
-" nnoremap <silent> K :call <SID>show_documentation()<CR>
-" 
-" function! s:show_documentation()
-"     if (index(['vim','help'], &filetype) >= 0)
-"         execute 'h '.expand('<cword>')
-"     else
-"         call CocAction('doHover')
-"     endif
-" endfunction
+
+" general coc.nvim lsp mappings
+set signcolumn=number
+nmap <silent> <leader>d <Plug>(coc-definition)
+nmap <silent> <leader>gy <Plug>(coc-type-definition)
+nmap <silent> <leader>gi <Plug>(coc-implementation)
+nmap <silent> <leader>gr <Plug>(coc-references)
+nmap <silent> <leader>rn <Plug>(coc-rename)
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+" show documentation
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    else
+        call CocAction('doHover')
+    endif
+endfunction
+" scroll popup
+nmap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? coc#float#scroll(1, 5) : "<c-w>j"
+nmap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? coc#float#scroll(0, 5) : "<c-w>k"
+inoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? "\<c-j>=coc#float#scroll(1, 5)\<cr>" : "\<Right>"
+inoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? "\<c-k>=coc#float#scroll(0, 5)\<cr>" : "\<Left>"
+vnoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? coc#float#scroll(1, 5) : "\<C-j>"
+vnoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? coc#float#scroll(0, 5) : "\<C-k>"

@@ -53,6 +53,7 @@ set -g @plugin 'seebi/tmux-colors-solarized'
 set -g @colors-solarized '256'
 
 set -g default-terminal "xterm-256color"
+set -ga terminal-overrides ",*256col*:Tc"
 
 # Other examples:
 # set -g @plugin 'github_username/plugin_name'
