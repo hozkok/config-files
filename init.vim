@@ -1,6 +1,5 @@
 set nocompatible
 filetype off
-
 " WARNING: Install vim-plug with the following code,
 " otherwise, vim will not work.
 "
@@ -150,6 +149,11 @@ Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-salve'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-dispatch'
+"""
+
+""" Plugin for db
+Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-ui'
 """
 
 " Tabular aligning items
@@ -421,10 +425,10 @@ let g:tagbar_type_markdown = {
 "endif
 
 " coc-nvim settings
-"autocmd CursorHold * silent call CocActionAsync('highlight') 
+autocmd CursorHold * silent call CocActionAsync('highlight') 
 "hi default link CocHighlightText CursorColumn
 "hi CocUnderline gui=underline term=underline
-"hi CocErrorHighlight ctermfg=red  guifg=#c4384b gui=undercurl term=undercurl
+"hi CocErrorHighlight ctermfg=red  guifg=#c4384b gui=underline term=underline
 "hi CocWarningHighlight ctermfg=yellow guifg=#c4ab39 gui=undercurl term=undercurl
 " function! s:check_back_space() abort
 "     let col = col('.') - 1
