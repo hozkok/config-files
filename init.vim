@@ -15,12 +15,12 @@ function! BuildVimTags(info)
     return 0
   endif
   if has('macunix')
-    !brew install ctags
+    !brew install universal-ctags
   else
-    !sudo apt-get install exuberant-ctags
+    !sudo apt install universal-ctags
   endif
 endfunction
-Plug 'majutsushi/tagbar', { 'do': function('BuildVimTags') }
+Plug 'liuchengxu/vista.vim', { 'do': function('BuildVimTags') }
 "Plug 'ludovicchabant/vim-gutentags'
 
 
@@ -420,6 +420,8 @@ let g:tagbar_type_markdown = {
     \ ]
 \ }
 
+let g:vista_default_executive = 'coc'
+
 "if (has("termguicolors"))
 "  set termguicolors
 "endif
@@ -465,3 +467,14 @@ inoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? "\<c-j>=coc#float
 inoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? "\<c-k>=coc#float#scroll(0, 5)\<cr>" : "\<Left>"
 vnoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? coc#float#scroll(1, 5) : "\<C-j>"
 vnoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? coc#float#scroll(0, 5) : "\<C-k>"
+" suggestion select
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
+" WSL yank support
+let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+if executable(s:clip)
+    augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+    augroup END
+endif
