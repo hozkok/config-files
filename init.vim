@@ -322,12 +322,12 @@ filetype on " try to detect filetypes
 "     map <leader>tR :TernRename<CR>
 " endif
 
-if (has("python3"))
-    let g:jedi#force_py_version = 3
-endif
-if (has('nvim'))
-    let g:python3_host_prog = $HOME . '/.pyenv/shims/python3'
-endif
+"if (has("python3"))
+"    let g:jedi#force_py_version = 3
+"endif
+"if (has('nvim'))
+"    let g:python3_host_prog = $HOME . '/.pyenv/shims/python3'
+"endif
 
 " colorscheme 256-jungle
 syntax enable
