@@ -2,6 +2,7 @@
   "languageserver": {
   },
   "diagnostic.showUnused": false,
-  "python.linting.flake8Enabled": true,
-  "python.linting.pylintEnabled": true
+  "python.linting.ruffEnabled": true,
+  "pyright.inlayHints.variableTypes": false,
+  "pyright.inlayHints.functionReturnTypes": false
 }
