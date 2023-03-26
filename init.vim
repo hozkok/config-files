@@ -28,7 +28,7 @@ Plug 'liuchengxu/vista.vim', { 'do': function('BuildVimTags') }
 Plug 'altercation/vim-colors-solarized'
 
 " fast file navigation
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " universal vim settings
