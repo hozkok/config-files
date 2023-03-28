@@ -15,12 +15,12 @@ function! BuildVimTags(info)
     return 0
   endif
   if has('macunix')
-    !brew install ctags
+    !brew install universal-ctags
   else
-    !sudo apt-get install exuberant-ctags
+    !sudo apt install universal-ctags
   endif
 endfunction
-Plug 'majutsushi/tagbar', { 'do': function('BuildVimTags') }
+Plug 'liuchengxu/vista.vim', { 'do': function('BuildVimTags') }
 "Plug 'ludovicchabant/vim-gutentags'
 
 
@@ -28,7 +28,7 @@ Plug 'majutsushi/tagbar', { 'do': function('BuildVimTags') }
 Plug 'altercation/vim-colors-solarized'
 
 " fast file navigation
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 " universal vim settings
@@ -322,12 +322,12 @@ filetype on " try to detect filetypes
 "     map <leader>tR :TernRename<CR>
 " endif
 
-if (has("python3"))
-    let g:jedi#force_py_version = 3
-endif
-if (has('nvim'))
-    let g:python3_host_prog = $HOME . '/.pyenv/shims/python3'
-endif
+"if (has("python3"))
+"    let g:jedi#force_py_version = 3
+"endif
+"if (has('nvim'))
+"    let g:python3_host_prog = $HOME . '/.pyenv/shims/python3'
+"endif
 
 " colorscheme 256-jungle
 syntax enable
@@ -422,6 +422,8 @@ let g:tagbar_type_markdown = {
     \ ]
 \ }
 
+let g:vista_default_executive = 'coc'
+
 "if (has("termguicolors"))
 "  set termguicolors
 "endif
@@ -467,5 +469,14 @@ inoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? "\<c-j>=coc#float
 inoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? "\<c-k>=coc#float#scroll(0, 5)\<cr>" : "\<Left>"
 vnoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? coc#float#scroll(1, 5) : "\<C-j>"
 vnoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? coc#float#scroll(0, 5) : "\<C-k>"
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" suggestion select
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
+" WSL yank support
+let s:clip = '/mnt/c/Windows/System32/clip.exe'  " change this path according to your mount point
+if executable(s:clip)
+    augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+    augroup END
+endif

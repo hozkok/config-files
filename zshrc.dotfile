@@ -107,6 +107,7 @@ eval "$(pyenv init -)"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 alias kubectx='kubectl ctx'
 alias kubens='kubectl ns'
+alias activate='source .venv/bin/activate'
 
 # Access custom aliases in the shell
 [ -e "${HOME}/.zsh_aliases" ] && source "${HOME}/.zsh_aliases"
