@@ -333,6 +333,8 @@ endif
 syntax enable
 set t_Co=256
 let g:solarized_termcolors=256
+let g:solarized_termtrans=1
+let g:solarized_underline=0
 set background=dark
 colorscheme solarized
 
@@ -455,7 +457,7 @@ function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
         execute 'h '.expand('<cword>')
     else
-        call CocAction('doHover')
+        call CocActionAsync('doHover')
     endif
 endfunction
 " scroll popup
@@ -465,3 +467,5 @@ inoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? "\<c-j>=coc#float
 inoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? "\<c-k>=coc#float#scroll(0, 5)\<cr>" : "\<Left>"
 vnoremap <silent><nowait><expr> <C-j> coc#float#has_scroll() ? coc#float#scroll(1, 5) : "\<C-j>"
 vnoremap <silent><nowait><expr> <C-k> coc#float#has_scroll() ? coc#float#scroll(0, 5) : "\<C-k>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"

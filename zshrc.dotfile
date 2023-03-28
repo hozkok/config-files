@@ -68,7 +68,7 @@ source $ZSH/oh-my-zsh.sh
 alias vim='nvim'
 
 alias clipcopy='xclip -sel clip'
-alias clippaste='xclip -o'
+alias clippaste='xclip -sel clip -o'
 alias activate='source .venv/bin/activate'
 
 setopt ignoreeof
@@ -82,6 +82,7 @@ setopt ignoreeof
 # else
 #   export EDITOR='mvim'
 # fi
+export EDITOR='nvim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -109,3 +110,5 @@ alias kubens='kubectl ns'
 
 # Access custom aliases in the shell
 [ -e "${HOME}/.zsh_aliases" ] && source "${HOME}/.zsh_aliases"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
