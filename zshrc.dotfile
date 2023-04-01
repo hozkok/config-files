@@ -59,7 +59,7 @@ PATH=$HOME/.local/bin/:$PATH
 PATH=$PATH:/usr/lib/nodejs/bin/
 PATH=$PATH:~/bin
 
-EDITOR=nvim
+export EDITOR=nvim
 
 alias mongod-start='mongod --dbpath ~/csdev/db'
 
@@ -70,7 +70,7 @@ source $ZSH/oh-my-zsh.sh
 alias vim='nvim'
 
 alias clipcopy='xclip -sel clip'
-alias clippaste='xclip -o'
+alias clippaste='xclip -sel clip -o'
 alias activate='source .venv/bin/activate'
 
 setopt ignoreeof

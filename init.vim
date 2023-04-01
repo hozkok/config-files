@@ -333,6 +333,8 @@ filetype on " try to detect filetypes
 syntax enable
 set t_Co=256
 let g:solarized_termcolors=256
+let g:solarized_termtrans=1
+let g:solarized_underline=0
 set background=dark
 colorscheme solarized
 
@@ -457,7 +459,7 @@ function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
         execute 'h '.expand('<cword>')
     else
-        call CocAction('doHover')
+        call CocActionAsync('doHover')
     endif
 endfunction
 " scroll popup

@@ -1,5 +1,2 @@
 [user]
 	name = hakan
-	email = hakan@telnyx.com
-[core]
-	editor = nvim
