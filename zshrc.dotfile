@@ -59,6 +59,8 @@ PATH=$HOME/.local/bin/:$PATH
 PATH=$PATH:/usr/lib/nodejs/bin/
 PATH=$PATH:~/bin
 
+EDITOR=nvim
+
 alias mongod-start='mongod --dbpath ~/csdev/db'
 
 alias tmux='tmux -2'

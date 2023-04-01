@@ -2,4 +2,4 @@
 	name = hakan
 	email = hakan@telnyx.com
 [core]
-	editor = /usr/bin/vim
+	editor = nvim
