@@ -23,9 +23,19 @@ endfunction
 Plug 'liuchengxu/vista.vim', { 'do': function('BuildVimTags') }
 "Plug 'ludovicchabant/vim-gutentags'
 
-
 " Plugins for colorscheme
 Plug 'altercation/vim-colors-solarized'
+Plug 'sainnhe/gruvbox-material'
+Plug 'morhetz/gruvbox'
+
+" async lua helpers for neovim
+Plug 'nvim-lua/plenary.nvim'
+
+" debugging
+Plug 'mfussenegger/nvim-dap'
+Plug 'mfussenegger/nvim-dap-python', { 'do': 'python -m venv ~/.debugpy && ~/.debugpy/bin/python -m pip install debugpy' }
+Plug 'nvim-neotest/neotest'
+Plug 'nvim-neotest/neotest-python'
 
 " fast file navigation
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -49,6 +59,9 @@ Plug 'ivanov/vim-ipython'
 """ 
 """ " Plug 'klen/python-mode'
 Plug 'scrooloose/nerdtree'
+Plug 'nvim-tree/nvim-web-devicons' " optional
+Plug 'nvim-tree/nvim-tree.lua'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Plug 'vim-syntastic/syntastic'
 "Plug 'neomake/neomake'
 """ 
@@ -97,19 +110,19 @@ Plug 'moll/vim-node'
 " Plugins for TypeScript
 Plug 'Quramy/tsuquyomi', {'do': 'npm install -g typescript'}
 let g:tsuquyomi_disable_quickfix=1
-let g:syntastic_typescript_checkers=['tsuquyomi']
+"let g:syntastic_typescript_checkers=['tsuquyomi']
 Plug 'leafgarland/typescript-vim'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 
 " syntastic always show error location list
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_auto_loc_list=1
-" syntastic status line message settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"let g:syntastic_always_populate_loc_list=1
+"let g:syntastic_auto_loc_list=1
+"" syntastic status line message settings
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 """ 
 " YouCompleteMe, generic completer
 " Plug 'Valloric/YouCompleteMe', {'do': './install.py --clang-completer --java-completer --js-completer'}
@@ -137,7 +150,6 @@ Plug 'vim-erlang/vim-erlang-runtime'
 Plug 'elixir-editors/vim-elixir'
 Plug 'slashmili/alchemist.vim'
 """ 
-
 
 """ Plugins for rust-lang
 Plug 'rust-lang/rust.vim'
@@ -190,6 +202,9 @@ let mapleader = ","
 
 " for Gdiff vertical open
 set diffopt+=vertical
+
+" disable mouse
+set mouse=
 
 " autocmd Filetype javascript,typescript,json,yaml,html setlocal ts=2 sts=2 sw=2 expandtab
 
@@ -291,7 +306,9 @@ nmap <C-h> <c-w>h
 map <leader>G :GundoToggle<CR>
 
 " NERDTree plugin shortcut
-map <C-n> :NERDTreeToggle<CR>
+"map <C-n> :NERDTreeToggle<CR>
+" NvimTree toggle shortcut
+map <C-n> :NvimTreeToggle<CR>
 
 " jedi-vim configuration
 let g:jedi#popup_on_dot = 0
@@ -329,23 +346,21 @@ filetype on " try to detect filetypes
 "    let g:python3_host_prog = $HOME . '/.pyenv/shims/python3'
 "endif
 
-" colorscheme 256-jungle
-syntax enable
-set t_Co=256
-let g:solarized_termcolors=256
-let g:solarized_termtrans=1
-let g:solarized_underline=0
-set background=dark
-colorscheme solarized
+"syntax enable
+"set t_Co=256
+"let g:solarized_termcolors=256
+"let g:solarized_termtrans=1
+"let g:solarized_underline=0
+"set background=dark
+if has('termguicolors')
+  set termguicolors
+endif
+let g:gruvbox_material_background='hard'
+let g:gruvbox_material_better_performance=1
+let g:airline_theme='gruvbox_material'
+colorscheme gruvbox-material
 
 set cc=80
-
-" set colorscheme to solarized
-" (make sure to install altercation/vim-colors-solarized first.)
-" set background=dark
-" let g:solarized_termtrans=1
-" set t_Co=16
-" colorscheme solarized
 
 filetype plugin indent on " enable loading indent file for filetype
 
@@ -424,10 +439,6 @@ let g:tagbar_type_markdown = {
 
 let g:vista_default_executive = 'coc'
 
-"if (has("termguicolors"))
-"  set termguicolors
-"endif
-
 " coc-nvim settings
 autocmd CursorHold * silent call CocActionAsync('highlight') 
 "hi default link CocHighlightText CursorColumn
@@ -480,3 +491,86 @@ if executable(s:clip)
         autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
     augroup END
 endif
+
+lua << EOF
+require("nvim-tree").setup()
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all" (the five listed parsers should always be installed)
+  ensure_installed = { "lua", "vim", "vimdoc", "query", "python" },
+
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+  auto_install = false,
+
+  -- List of parsers to ignore installing (for "all")
+  ignore_install = { "javascript" },
+
+  ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
+  -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
+
+  highlight = {
+    enable = true,
+
+    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
+    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
+    -- the name of the parser)
+    -- list of language that will be disabled
+    -- disable = { "c", "rust" },
+    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+    disable = function(lang, buf)
+        local max_filesize = 100 * 1024 -- 100 KB
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+        if ok and stats and stats.size > max_filesize then
+            return true
+        end
+    end,
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+
+-- neovim-dap and neotest configs for debugging
+do
+  local dap = require('dap')
+  local dappy = require('dap-python')
+  local widgets = require('dap.ui.widgets')
+  dappy.setup('~/.debugpy/bin/python')
+  dappy.test_runner = 'pytest'
+  vim.keymap.set('n', '<leader>xc', function() dap.continue() end)
+  vim.keymap.set('n', '<leader>xn', function() dap.step_over() end)
+  vim.keymap.set('n', '<leader>xs', function() dap.step_into() end)
+  vim.keymap.set('n', '<leader>xr', function() dap.step_out() end)
+  vim.keymap.set('n', '<leader>xu', function() dap.up() end)
+  vim.keymap.set('n', '<leader>xd', function() dap.down() end)
+  vim.keymap.set('n', '<leader>xb', function() dap.toggle_breakpoint() end)
+  vim.keymap.set('n', '<leader>xl', function() dap.run_last() end)
+  vim.keymap.set('n', '<leader>xii', function() dap.repl.open() end)
+  vim.keymap.set('n', '<Leader>xff', function()
+    widgets.centered_float(widgets.frames)
+  end)
+  vim.keymap.set({'n', 'v'}, '<Leader>xh', function()
+    widgets.hover()
+  end)
+  vim.keymap.set({'n', 'v'}, '<Leader>xp', function()
+    widgets.preview()
+  end)
+  vim.keymap.set('n', '<Leader>xf', function()
+    widgets.centered_float(widgets.frames)
+  end)
+  vim.keymap.set('n', '<Leader>xs', function()
+    widgets.centered_float(widgets.scopes)
+  end)
+  require("neotest").setup({
+    adapters = {
+      require("neotest-python")
+    }
+  })
+end
+EOF

@@ -51,6 +51,8 @@ set -g @resurrect-strategy-vim 'session'
 
 set -g @plugin 'seebi/tmux-colors-solarized'
 set -g @colors-solarized '256'
+set -g @plugin 'egel/tmux-gruvbox'
+set -g @tmux-gruvbox 'dark' # or 'light' 
 
 set -g default-terminal "xterm-256color"
 set -ga terminal-overrides ",*256col*:Tc"
