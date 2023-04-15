@@ -55,7 +55,7 @@ Plug 'vimwiki/vimwiki'
 "Plug 'davidhalter/jedi-vim', { 'do': 'git submodule update --init', 'for': 'python' }
 """ 
 """ " IPython integration
-Plug 'ivanov/vim-ipython'
+"Plug 'ivanov/vim-ipython'
 """ 
 """ " Plug 'klen/python-mode'
 Plug 'scrooloose/nerdtree'
@@ -66,9 +66,9 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 "Plug 'neomake/neomake'
 """ 
 " better python indentation
-Plug 'Vimjas/vim-python-pep8-indent'
+"Plug 'Vimjas/vim-python-pep8-indent'
 """ " plugin for python pep8 checking
-Plug 'nvie/vim-flake8', {'for': 'python'}
+"Plug 'nvie/vim-flake8', {'for': 'python'}
 """ 
 """ 
 Plug 'vim-airline/vim-airline'
@@ -310,9 +310,10 @@ map <leader>G :GundoToggle<CR>
 " NvimTree toggle shortcut
 map <C-n> :NvimTreeToggle<CR>
 
-" jedi-vim configuration
-let g:jedi#popup_on_dot = 0
-let g:jedi#show_call_signatures = "0"
+" disable checks for python; there is no plugin dependency using python
+" this is mostly required for legacy vim plugins that depend on python
+" most plugins nowadays use lua instead.
+let g:loaded_python3_provider = 0
 
 " vimwiki file format and path configuration
 let g:vimwiki_list = [{'path': '~/vimwiki/',
@@ -542,8 +543,10 @@ do
   local dappy = require('dap-python')
   local widgets = require('dap.ui.widgets')
   local neotest = require('neotest')
+  local neotestpy = require('neotest-python')
   dappy.setup('~/.debugpy/bin/python')
   dappy.test_runner = 'pytest'
+  vim.keymap.set('n', '<leader>x', function() end) -- noop to prevent `x` on timeout
   vim.keymap.set('n', '<leader>xc', function() dap.continue() end)
   vim.keymap.set('n', '<leader>xn', function() dap.step_over() end)
   vim.keymap.set('n', '<leader>xs', function() dap.step_into() end)
@@ -551,7 +554,7 @@ do
   vim.keymap.set('n', '<leader>xu', function() dap.up() end)
   vim.keymap.set('n', '<leader>xd', function() dap.down() end)
   vim.keymap.set('n', '<leader>xb', function() dap.toggle_breakpoint() end)
-  vim.keymap.set('n', '<leader>xl', function() dap.run_last() end)
+  vim.keymap.set('n', '<leader>xl', function() dap.run_to_cursor() end)
   vim.keymap.set('n', '<leader>xii', function() dap.repl.open() end)
   vim.keymap.set({'n', 'v'}, '<Leader>xh', function()
     widgets.hover()
@@ -567,10 +570,15 @@ do
   end)
   neotest.setup({
     adapters = {
-      require("neotest-python")
+      neotestpy({
+        dap = { justMyCode = false },
+      })
     }
   })
   vim.keymap.set('n', '<leader>xtt', function() neotest.run.run() end)
   vim.keymap.set('n', '<leader>xtd', function() neotest.run.run({strategy='dap'}) end)
+  vim.api.nvim_create_user_command(
+    'DapClearBreakpoints', dap.clear_breakpoints, {nargs=0}
+  )
 end
 EOF
