@@ -541,6 +541,7 @@ do
   local dap = require('dap')
   local dappy = require('dap-python')
   local widgets = require('dap.ui.widgets')
+  local neotest = require('neotest')
   dappy.setup('~/.debugpy/bin/python')
   dappy.test_runner = 'pytest'
   vim.keymap.set('n', '<leader>xc', function() dap.continue() end)
@@ -552,25 +553,24 @@ do
   vim.keymap.set('n', '<leader>xb', function() dap.toggle_breakpoint() end)
   vim.keymap.set('n', '<leader>xl', function() dap.run_last() end)
   vim.keymap.set('n', '<leader>xii', function() dap.repl.open() end)
-  vim.keymap.set('n', '<Leader>xff', function()
-    widgets.centered_float(widgets.frames)
-  end)
   vim.keymap.set({'n', 'v'}, '<Leader>xh', function()
     widgets.hover()
   end)
   vim.keymap.set({'n', 'v'}, '<Leader>xp', function()
     widgets.preview()
   end)
-  vim.keymap.set('n', '<Leader>xf', function()
+  vim.keymap.set('n', '<Leader>xff', function()
     widgets.centered_float(widgets.frames)
   end)
-  vim.keymap.set('n', '<Leader>xs', function()
+  vim.keymap.set('n', '<Leader>xfs', function()
     widgets.centered_float(widgets.scopes)
   end)
-  require("neotest").setup({
+  neotest.setup({
     adapters = {
       require("neotest-python")
     }
   })
+  vim.keymap.set('n', '<leader>xtt', function() neotest.run.run() end)
+  vim.keymap.set('n', '<leader>xtd', function() neotest.run.run({strategy='dap'}) end)
 end
 EOF
