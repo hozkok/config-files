@@ -135,10 +135,10 @@ Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-surround'
 """ 
 " plugins for vim-snipmate
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
-Plug 'honza/vim-snippets'
+"Plug 'MarcWeber/vim-addon-mw-utils'
+"Plug 'tomtom/tlib_vim'
+"Plug 'garbas/vim-snipmate'
+"Plug 'honza/vim-snippets'
 """ 
 "Plugins for erlang
 Plug 'vim-erlang/vim-erlang-omnicomplete'
@@ -219,6 +219,13 @@ au BufNewFile,BufRead *.py
     \ set tabstop=4 |
     \ set softtabstop=4 |
     \ set shiftwidth=4 |
+    \ set expandtab |
+    \ set smarttab
+
+au BufNewFile,BufRead *.lua
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2 |
     \ set expandtab |
     \ set smarttab
 
