@@ -573,12 +573,23 @@ do
       neotestpy({
         dap = { justMyCode = false },
       })
-    }
+    },
+    status = {
+      enabled = false,
+    },
   })
   vim.keymap.set('n', '<leader>xtt', function() neotest.run.run() end)
-  vim.keymap.set('n', '<leader>xtd', function() neotest.run.run({strategy='dap'}) end)
+  vim.keymap.set('n', '<leader>xtd', function()
+    neotest.run.run({strategy='dap'})
+  end)
   vim.api.nvim_create_user_command(
     'DapClearBreakpoints', dap.clear_breakpoints, {nargs=0}
+  )
+  vim.api.nvim_create_user_command(
+    'NeotestOutput', neotest.output_panel.toggle, {nargs=0}
+  )
+  vim.api.nvim_create_user_command(
+    'NeotestSummary', neotest.summary.toggle, {nargs=0}
   )
 end
 EOF
