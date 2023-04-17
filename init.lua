@@ -79,7 +79,7 @@ if vim.fn.has('termguicolors') then
     vim.o.termguicolors = true
 end
 
-vim.o.cc = 80
+vim.o.cc = '80'
 
 -- WSL yank support
 if vim.fn.executable('clip.exe') then

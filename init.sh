@@ -23,7 +23,6 @@ function maybe_create_link {
 function init_nvim {
     nvim_config_dir=$HOME/.config/nvim
     nvim_data_dir=$HOME/.local/share/nvim
-    maybe_create_link $SCRIPT_DIR/init.vim $nvim_config_dir/init.vim
     maybe_create_link $SCRIPT_DIR/init.lua $nvim_config_dir/init.lua
     maybe_create_link $SCRIPT_DIR/coc-settings.json $nvim_config_dir/coc-settings.json
     maybe_create_link $SCRIPT_DIR/plugins.lua $nvim_config_dir/lua/plugins.lua
