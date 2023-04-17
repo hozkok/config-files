@@ -41,6 +41,8 @@ vim.o.updatetime = 500
 -- second.
 vim.o.showmatch = true
 vim.o.laststatus = 2
+vim.o.ignorecase = true
+vim.o.smartcase = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.softtabstop = 4
