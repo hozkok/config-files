@@ -84,7 +84,7 @@ end
 vim.o.cc = '80'
 
 -- WSL yank support
-if vim.fn.executable('clip.exe') then
+if(vim.fn.executable('clip.exe') ~= 0) then
   vim.g.clipboard = {
     name = 'WslClipboard',
     copy = {

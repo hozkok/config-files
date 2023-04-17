@@ -104,6 +104,12 @@ return require('packer').startup(function (use)
   }
   use 'junegunn/fzf.vim'
 
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = { {'nvim-lua/plenary.nvim'} },
+    tag = '0.1.1',
+  }
+
   -- universal vim settings
   use 'tpope/vim-sensible'
 
@@ -177,7 +183,14 @@ return require('packer').startup(function (use)
   use 'vim-airline/vim-airline'
 
   -- smooth scrolling
-  use 'yuttie/comfortable-motion.vim'
+  use {
+    'karb94/neoscroll.nvim',
+    config = function()
+      require('neoscroll').setup({
+        easing_function = 'quadratic',
+      })
+    end
+  }
 
   -- git graph log visualisation
   use 'rbong/vim-flog'
