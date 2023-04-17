@@ -29,10 +29,18 @@ return require('packer').startup(function (use)
 
   -- debugging
   use {
-    'mfussenegger/nvim-dap',
-    'mfussenegger/nvim-dap-python',
-    'nvim-neotest/neotest',
-    'nvim-neotest/neotest-python',
+    --'nvim-neotest/neotest',
+    -- for now, using this until
+    -- https://github.com/nvim-neotest/neotest/pull/234 is merged
+    'hozkok/neotest',
+    requires = {
+      "mfussenegger/nvim-dap",
+      "mfussenegger/nvim-dap-python",
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-neotest/neotest-python",
+    },
+    run = 'python -m venv ~/.debugpy && ~/.debugpy/bin/python -m pip install debugpy',
     config = function()
       local dap = require('dap')
       local dappy = require('dap-python')
@@ -88,18 +96,6 @@ return require('packer').startup(function (use)
       )
     end
   }
-  use {
-    'mfussenegger/nvim-dap-python',
-    run = 'python -m venv ~/.debugpy && ~/.debugpy/bin/python -m pip install debugpy'
-  }
-  use {
-    'nvim-neotest/neotest',
-    requires = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    }
-  }
-  use 'nvim-neotest/neotest-python'
 
   -- file navigation
   use {
@@ -206,30 +202,33 @@ return require('packer').startup(function (use)
       end
       keyset("n", "K", '<CMD>lua _G.show_docs()<CR>', {silent = true})
       -- Use <c-space> to trigger completion
-      -- keyset("i", "<c-space>", "coc#refresh()", {silent = true, expr = true})
-      -- vim.api.nvim_create_augroup("CocGroup", {})
-      -- vim.api.nvim_create_autocmd("CursorHold", {
-      --   group = "CocGroup",
-      --   command = "silent call CocActionAsync('highlight')",
-      --   desc = "Highlight symbol under cursor on CursorHold"
-      -- })
-      -- local opts = {silent = true, noremap = true, expr = true, replace_keycodes = false}
-      -- keyset("n", "<leader>d", "<Plug>(coc-definition)", {silent = true})
-      -- keyset("n", "<leader>gy", "<Plug>(coc-type-definition)", {silent = true})
-      -- keyset("n", "<leader>gi", "<Plug>(coc-implementation)", {silent = true})
-      -- keyset("n", "<leader>gr", "<Plug>(coc-references)", {silent = true})
-      -- keyset("n", "<leader>rn", "<Plug>(coc-rename)", {silent = true})
+      keyset("i", "<c-space>", "coc#refresh()", {silent = true, expr = true})
+      vim.api.nvim_create_augroup("CocGroup", {})
+      vim.api.nvim_create_autocmd("CursorHold", {
+        group = "CocGroup",
+        command = "silent call CocActionAsync('highlight')",
+        desc = "Highlight symbol under cursor on CursorHold"
+      })
+      keyset("n", "<leader>d", "<Plug>(coc-definition)", {silent = true})
+      keyset("n", "<leader>gy", "<Plug>(coc-type-definition)", {silent = true})
+      keyset("n", "<leader>gi", "<Plug>(coc-implementation)", {silent = true})
+      keyset("n", "<leader>gr", "<Plug>(coc-references)", {silent = true})
+      keyset("n", "<leader>rn", "<Plug>(coc-rename)", {silent = true})
       -- -- scroll popup
-      -- keyset("n", "<C-j>", 'coc#float#has_scroll() ? coc#float#scroll(1, 5)" : "<c-w>j"',
-      --        {silent = true, nowait = true, expr = true})
-      -- keyset("n", "<C-k>", 'coc#float#has_scroll() ? coc#float#scroll(0, 5)" : "<c-w>k"',
-      --        {silent = true, nowait = true, expr = true})
-      -- keyset("i", "<C-j>", 'coc#float#has_scroll() ? "\\<c-j>=coc#float#scroll(1, 5)\\<cr>" : "\\<Right>"',
-      --        {silent = true, nowait = true, expr = true, noremap=true})
-      -- keyset("i", "<C-k>", 'coc#float#has_scroll() ? "\\<c-j>=coc#float#scroll(1, 5)\\<cr>" : "\\<Left>"',
-      --        {silent = true, nowait = true, expr = true, noremap=true})
-      -- -- suggestion select
-      -- keyset("i", '<cr> coc#pum#visible() ? coc#pum#confirm() : "\\<CR>"', {expr=true, noremap=true})
+      keyset("n", "<C-j>", 'coc#float#has_scroll() ? coc#float#scroll(1, 5) : "<c-w>j"',
+             {silent = true, nowait = true, expr = true})
+      keyset("n", "<C-k>", 'coc#float#has_scroll() ? coc#float#scroll(0, 5) : "<c-w>k"',
+             {silent = true, nowait = true, expr = true})
+      keyset("i", "<C-j>", 'coc#float#has_scroll() ? "\\<c-j>=coc#float#scroll(1, 5)\\<cr>" : "\\<Right>"',
+             {silent = true, nowait = true, expr = true, remap=false})
+      keyset("i", "<C-k>", 'coc#float#has_scroll() ? "\\<c-j>=coc#float#scroll(1, 5)\\<cr>" : "\\<Left>"',
+             {silent = true, nowait = true, expr = true, remap=false})
+      keyset("v", "<C-j>", 'coc#float#has_scroll() ? coc#float#scroll(1, 5) : "<c-w>j"',
+             {silent = true, nowait = true, expr = true})
+      keyset("v", "<C-k>", 'coc#float#has_scroll() ? coc#float#scroll(0, 5) : "<c-w>k"',
+             {silent = true, nowait = true, expr = true})
+      ---- suggestion select
+      keyset("i", '<cr>', 'coc#pum#visible() ? coc#pum#confirm() : "\\<CR>"', {expr=true, noremap=true})
     end
   }
 

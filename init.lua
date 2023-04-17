@@ -1,4 +1,12 @@
 require('plugins')
+
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
+  augroup end
+]])
+
 vim.o.foldmethod = 'indent'
 vim.o.foldlevel = 99
 vim.opt.diffopt = vim.opt.diffopt + 'vertical'
@@ -12,7 +20,7 @@ vim.api.nvim_create_autocmd({'BufNewFile', 'BufRead'}, {
     vim.bo.softtabstop = 4
     vim.bo.shiftwidth = 4
     vim.bo.expandtab = true
-    vim.bo.smarttab = true
+    vim.o.smarttab = true
   end
 })
 
