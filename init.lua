@@ -53,10 +53,12 @@ vim.o.wrapmargin = 0
 vim.o.backspace = 'indent,eol,start'
 vim.o.autoindent = true
 vim.keymap.set('n', '<leader>b', ':ls<CR>:b<Space>', {remap = false})
-os.execute('mkdir -p ~/.vim/backup ~/.vim/swap ~/.vim/undo')
-vim.o.backupdir = '~/.vim/backup//'
-vim.o.directory = '~/.vim/swap//'
-vim.o.undodir = '~/.vim/undo//'
+do
+  local vimdir = vim.env.HOME .. '/.vim'
+  vim.o.backupdir = vimdir .. '/backup//'
+  vim.o.directory = vimdir .. '/swap//'
+  vim.o.undodir = vimdir .. '/undodir//'
+end
 
 -- better indentation
 vim.keymap.set('v', '<', '<gv', {remap = false})

@@ -4,5 +4,6 @@
   "diagnostic.showUnused": false,
   "python.linting.ruffEnabled": true,
   "pyright.inlayHints.variableTypes": false,
-  "pyright.inlayHints.functionReturnTypes": false
+  "pyright.inlayHints.functionReturnTypes": false,
+  "Lua.diagnostics.globals": ["vim"]
 }
