@@ -54,6 +54,7 @@ vim.o.textwidth = 0
 vim.o.wrapmargin = 0
 vim.o.backspace = 'indent,eol,start'
 vim.o.autoindent = true
+vim.o.exrc = true
 vim.keymap.set('n', '<leader>b', ':ls<CR>:b<Space>', {remap = false})
 do
   local vimdir = vim.env.HOME .. '/.vim'
@@ -98,3 +99,41 @@ if(vim.fn.executable('clip.exe') ~= 0) then
     cache_enabled = 0,
   }
 end
+
+_G.remote_docker_debug_cmd = function(command)
+  local container_name = command.args
+  local dap = require('dap')
+  local container_ls = ("docker container ls -qf 'name=%s'"):format(container_name)
+  local function exec(cmd)
+    return (io.popen(cmd, "r")):read("l")
+  end
+  local container_id = exec(container_ls)
+  if container_id == nil then
+    print("cannot access the container, make sure it is running")
+    return
+  end
+  local container_ip = exec(
+    ("docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' %s"):format(container_id)
+  )
+  dap.run(
+    {
+      type = "python",
+      request = "attach",
+      justMyCode = false,
+      name = "docker remote debugger",
+      connect = {
+        host = container_ip,
+        port = 5678
+      },
+      pathMappings = {
+        {
+          localRoot = vim.fn.getcwd(),
+          remoteRoot = "/app",
+        }
+      },
+    }
+  )
+end
+vim.api.nvim_create_user_command(
+  "DebugDocker", _G.remote_docker_debug_cmd, {nargs=1}
+)
