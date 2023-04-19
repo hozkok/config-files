@@ -47,30 +47,9 @@ return require('packer').startup(function (use)
       local widgets = require('dap.ui.widgets')
       local neotest = require('neotest')
       local neotestpy = require('neotest-python')
+      local wk = require("which-key")
       dappy.setup('~/.debugpy/bin/python')
       dappy.test_runner = 'pytest'
-      vim.keymap.set('n', '<leader>x', function() end) -- noop to prevent `x` on timeout
-      vim.keymap.set('n', '<leader>xc', function() dap.continue() end)
-      vim.keymap.set('n', '<leader>xn', function() dap.step_over() end)
-      vim.keymap.set('n', '<leader>xs', function() dap.step_into() end)
-      vim.keymap.set('n', '<leader>xr', function() dap.step_out() end)
-      vim.keymap.set('n', '<leader>xu', function() dap.up() end)
-      vim.keymap.set('n', '<leader>xd', function() dap.down() end)
-      vim.keymap.set('n', '<leader>xb', function() dap.toggle_breakpoint() end)
-      vim.keymap.set('n', '<leader>xl', function() dap.run_to_cursor() end)
-      vim.keymap.set('n', '<leader>xii', function() dap.repl.open() end)
-      vim.keymap.set({'n', 'v'}, '<Leader>xh', function()
-        widgets.hover()
-      end)
-      vim.keymap.set({'n', 'v'}, '<Leader>xp', function()
-        widgets.preview()
-      end)
-      vim.keymap.set('n', '<Leader>xff', function()
-        widgets.centered_float(widgets.frames)
-      end)
-      vim.keymap.set('n', '<Leader>xfs', function()
-        widgets.centered_float(widgets.scopes)
-      end)
       neotest.setup({
         adapters = {
           neotestpy({
@@ -81,10 +60,57 @@ return require('packer').startup(function (use)
           enabled = false,
         },
       })
-      vim.keymap.set('n', '<leader>xtt', function() neotest.run.run() end)
-      vim.keymap.set('n', '<leader>xtd', function()
-        neotest.run.run({strategy='dap'})
-      end)
+      wk.register({
+        ["<leader>x"] = {
+          c = {dap.continue, "continue/run debug"},
+          n = {dap.step_over, "step over line"},
+          s = {dap.step_into, "step into line"},
+          r = {dap.step_out, "return/step out function"},
+          u = {dap.up, "go up in stack trace"},
+          d = {dap.down, "go down in stack trace"},
+          b = {dap.toggle_breakpoint, "toggle breakpoint"},
+          l = {dap.run_to_cursor, "run until the cursor"},
+          h = {widgets.hover, "show object", mode = {"n", "v"}},
+          p = {widgets.preview, "show preview", mode = {"n", "v"}},
+          ii = {dap.repl.open, "open repl"},
+          ff = {
+            function()
+              widgets.centered_float(widgets.frames)
+            end,
+            "show stack frames"
+          },
+          fs = {
+            function()
+              widgets.centered_float(widgets.scopes)
+            end,
+            "show stack scopes"
+          },
+          tt = {
+            function()
+              neotest.run.run()
+            end,
+            "run neotest"
+          },
+          td = {
+            function()
+              neotest.run.run({strategy='dap'})
+            end,
+            "run neotest in debug mode"
+          },
+          to = {
+            function()
+              neotest.output_panel.toggle()
+            end,
+            "toggle neotest output panel"
+          },
+          ts = {
+            function()
+              neotest.summary.toggle()
+            end,
+            "toggle neotest summary panel"
+          }
+        }
+      })
       vim.api.nvim_create_user_command(
         'DapClearBreakpoints', dap.clear_breakpoints, {nargs=0}
       )
@@ -265,6 +291,16 @@ return require('packer').startup(function (use)
     'scrooloose/nerdcommenter',
     config = function()
       vim.g.NERDDefaultAlign = 'left'
+    end
+  }
+
+  use {
+    'folke/which-key.nvim',
+    config = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 500
+      require('which-key').setup({
+      })
     end
   }
 end)
