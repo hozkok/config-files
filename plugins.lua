@@ -62,6 +62,7 @@ return require('packer').startup(function (use)
       })
       wk.register({
         ["<leader>x"] = {
+          "debugger options",
           c = {dap.continue, "continue/run debug"},
           n = {dap.step_over, "step over line"},
           s = {dap.step_into, "step into line"},
@@ -72,7 +73,9 @@ return require('packer').startup(function (use)
           l = {dap.run_to_cursor, "run until the cursor"},
           h = {widgets.hover, "show object", mode = {"n", "v"}},
           p = {widgets.preview, "show preview", mode = {"n", "v"}},
-          ii = {dap.repl.open, "open repl"},
+          i = {"open repl"},
+          f = {"show stack options"},
+          ii = {dap.repl.open, "really open repl?"},
           ff = {
             function()
               widgets.centered_float(widgets.frames)
@@ -85,6 +88,7 @@ return require('packer').startup(function (use)
             end,
             "show stack scopes"
           },
+          t = {"neotest commands"},
           tt = {
             function()
               neotest.run.run()
