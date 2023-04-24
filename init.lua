@@ -47,6 +47,8 @@ vim.api.nvim_create_autocmd({'BufNewFile', 'BufRead'}, {
   end
 })
 
+vim.o.cursorline = true
+vim.o.cursorlineopt = 'number'
 vim.o.relativenumber = true
 vim.o.number = true
 vim.o.updatetime = 500
