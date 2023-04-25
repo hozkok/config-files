@@ -38,6 +38,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "nvim-neotest/neotest-python",
     },
+    keys = '<leader>x',
     build = 'python -m venv ~/.debugpy && ~/.debugpy/bin/python -m pip install debugpy',
     config = function()
       local dap = require('dap')
@@ -154,7 +155,9 @@ return {
         {path = '~/vimwiki/', syntax = 'markdown', ext = '.md'},
       }
       vim.g.vimwiki_global_ext = 0
-    end
+    end,
+    lazy = true,
+    keys = '<leader>w',
   },
 
   -- file tree browser
@@ -167,6 +170,8 @@ return {
       require('nvim-tree').setup()
       vim.keymap.set('n', '<C-n>', ':NvimTreeToggle<CR>')
     end,
+    keys = '<C-n>',
+    cmd = 'NvimTreeToggle',
   },
 
   {
@@ -334,5 +339,13 @@ return {
       })
     end
   },
-  "github/copilot.vim",
+  {
+    "github/copilot.vim",
+    config = function()
+      vim.b.copilot_enabled = false
+      vim.api.nvim_command()
+    end,
+    lazy = true,
+    cmd = "Copilot",
+  },
 }
