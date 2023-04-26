@@ -245,6 +245,8 @@ return {
     config = function()
       require('neoscroll').setup({
         easing_function = 'quadratic',
+        stop_eof = false,
+        cursor_scrolls_alone = false,
       })
     end
   },
