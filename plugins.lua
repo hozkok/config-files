@@ -1,10 +1,8 @@
-return require('packer').startup(function (use)
-  use 'wbthomason/packer.nvim'
-
+return {
   -- fn and variable tags
-  use {
+  {
     'liuchengxu/vista.vim',
-    run = function()
+    build = function()
       if vim.fn.has('macunix') then
         os.execute('brew install universal-ctags')
       else
@@ -14,33 +12,34 @@ return require('packer').startup(function (use)
     config = function()
       vim.g.vista_default_executive = 'coc'
     end
-  }
+  },
 
   -- colorscheme
-  use {
+  {
     'sainnhe/gruvbox-material',
     config = function()
       vim.g.gruvbox_material_background = 'hard'
       vim.g.gruvbox_material_better_performance = 1
-      vim.g.airline_theme = 'gruvbox_material'
       vim.cmd.colorscheme('gruvbox-material')
-    end
-  }
+    end,
+    lazy=false,
+  },
 
   -- debugging
-  use {
+  {
     --'nvim-neotest/neotest',
     -- for now, using this until
     -- https://github.com/nvim-neotest/neotest/pull/234 is merged
     'hozkok/neotest',
-    requires = {
+    dependencies = {
       "mfussenegger/nvim-dap",
       "mfussenegger/nvim-dap-python",
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "nvim-neotest/neotest-python",
     },
-    run = 'python -m venv ~/.debugpy && ~/.debugpy/bin/python -m pip install debugpy',
+    keys = '<leader>x',
+    build = 'python -m venv ~/.debugpy && ~/.debugpy/bin/python -m pip install debugpy',
     config = function()
       local dap = require('dap')
       local dappy = require('dap-python')
@@ -88,31 +87,33 @@ return require('packer').startup(function (use)
             end,
             "show stack scopes"
           },
-          t = {"neotest commands"},
-          tt = {
-            function()
-              neotest.run.run()
-            end,
-            "run neotest"
+          t = {
+            "neotest commands",
+            t = {
+              function()
+                neotest.run.run()
+              end,
+              "run neotest"
+            },
+            d = {
+              function()
+                neotest.run.run({strategy='dap'})
+              end,
+              "run neotest in debug mode"
+            },
+            o = {
+              function()
+                neotest.output_panel.toggle()
+              end,
+              "toggle neotest output panel"
+            },
+            s = {
+              function()
+                neotest.summary.toggle()
+              end,
+              "toggle neotest summary panel"
+            },
           },
-          td = {
-            function()
-              neotest.run.run({strategy='dap'})
-            end,
-            "run neotest in debug mode"
-          },
-          to = {
-            function()
-              neotest.output_panel.toggle()
-            end,
-            "toggle neotest output panel"
-          },
-          ts = {
-            function()
-              neotest.summary.toggle()
-            end,
-            "toggle neotest summary panel"
-          }
         }
       })
       vim.api.nvim_create_user_command(
@@ -125,49 +126,59 @@ return require('packer').startup(function (use)
         'NeotestSummary', neotest.summary.toggle, {nargs=0}
       )
     end
-  }
+  },
 
   -- file navigation
-  use {
+  {
     'junegunn/fzf',
-    run = function() vim.fn['fzf#install']() end
-  }
-  use 'junegunn/fzf.vim'
+    build = function() vim.fn['fzf#install']() end
+  },
 
-  use {
+  {
+    'junegunn/fzf.vim',
+  },
+
+  {
     'nvim-telescope/telescope.nvim',
-    requires = { {'nvim-lua/plenary.nvim'} },
-    tag = '0.1.1',
-  }
+    dependencies = { {'nvim-lua/plenary.nvim'} },
+    version = '0.1.1',
+  },
 
   -- universal vim settings
-  use 'tpope/vim-sensible'
+  'tpope/vim-sensible',
 
   -- personal note taking plugin (similar to orgmode in emacs)
-  use {
+  {
     'vimwiki/vimwiki',
     config = function()
       vim.g.vimwiki_list = {
         {path = '~/vimwiki/', syntax = 'markdown', ext = '.md'},
       }
       vim.g.vimwiki_global_ext = 0
-    end
-  }
+    end,
+    lazy = true,
+    keys = '<leader>w',
+  },
 
   -- file tree browser
-  use {
+  {
     'nvim-tree/nvim-tree.lua',
-    requires = {'nvim-tree/nvim-web-devicons'},
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
     config = function()
       require('nvim-tree').setup()
       vim.keymap.set('n', '<C-n>', ':NvimTreeToggle<CR>')
     end,
-  }
-  use {
+    keys = '<C-n>',
+    cmd = 'NvimTreeToggle',
+  },
+
+  {
     'nvim-treesitter/nvim-treesitter',
-    run = ':TSUpdate',
+    build = ':TSUpdate',
     config = function()
-      require'nvim-treesitter.configs'.setup {
+      require('nvim-treesitter.configs').setup {
         -- A list of parser names, or "all" (the five listed parsers should always be installed)
         ensure_installed = { "lua", "vim", "vimdoc", "query", "python" },
 
@@ -212,24 +223,37 @@ return require('packer').startup(function (use)
         }
       }
     end
-  }
-  use 'vim-airline/vim-airline'
+  },
+
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = {
+      'sainnhe/gruvbox-material',
+    },
+    config = function()
+      require('lualine').setup({
+        options = {
+          themes = 'gruvbox-material',
+        },
+      })
+    end,
+  },
 
   -- smooth scrolling
-  use {
+  {
     'karb94/neoscroll.nvim',
     config = function()
       require('neoscroll').setup({
         easing_function = 'quadratic',
       })
     end
-  }
+  },
 
   -- git graph log visualisation
-  use 'rbong/vim-flog'
+  'rbong/vim-flog',
 
   -- nice LSP client
-  use {
+  {
     'neoclide/coc.nvim',
     branch = 'release',
     config = function()
@@ -276,32 +300,37 @@ return require('packer').startup(function (use)
       ---- suggestion select
       keyset("i", '<cr>', 'coc#pum#visible() ? coc#pum#confirm() : "\\<CR>"', {expr=true, noremap=true})
     end
-  }
+  },
 
   -- git integration
-  use 'tpope/vim-fugitive'
+  'tpope/vim-fugitive',
 
   -- deal with text surrounding manipulation
-  use 'tpope/vim-surround'
+  'tpope/vim-surround',
 
   -- rust <3
-  use 'rust-lang/rust.vim'
+  'rust-lang/rust.vim',
 
   -- DBUI
-  use {'kristijanhusak/vim-dadbod-ui', requires = {'tpope/vim-dadbod'}}
+  {
+    'kristijanhusak/vim-dadbod-ui',
+    dependencies = {
+      'tpope/vim-dadbod',
+    }
+  },
 
-  use 'godlygeek/tabular'
+  'godlygeek/tabular',
 
-  use 'plasticboy/vim-markdown'
+  'plasticboy/vim-markdown',
 
-  use {
+  {
     'scrooloose/nerdcommenter',
     config = function()
       vim.g.NERDDefaultAlign = 'left'
     end
-  }
+  },
 
-  use {
+  {
     'folke/which-key.nvim',
     config = function()
       vim.o.timeout = true
@@ -309,5 +338,14 @@ return require('packer').startup(function (use)
       require('which-key').setup({
       })
     end
-  }
-end)
+  },
+  {
+    "github/copilot.vim",
+    config = function()
+      vim.b.copilot_enabled = false
+      vim.api.nvim_command()
+    end,
+    lazy = true,
+    cmd = "Copilot",
+  },
+}

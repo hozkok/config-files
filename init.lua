@@ -1,17 +1,30 @@
-require('plugins')
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-]])
+vim.g.mapleader = ','
+-- disable checks for python; there is no plugin dependency using python
+-- this is mostly required for legacy vim plugins that depend on python
+-- most plugins nowadays use lua instead.
+vim.g.loaded_python3_provider = 0
+
+require('lazy').setup('plugins', {
+  defaults = { lazy = false },
+})
 
 vim.o.foldmethod = 'indent'
 vim.o.foldlevel = 99
 vim.opt.diffopt = vim.opt.diffopt + 'vertical'
 vim.o.mouse = ''
-vim.g.mapleader = ','
 
 vim.api.nvim_create_autocmd({'BufNewFile', 'BufRead'}, {
   pattern = '*.py',
@@ -34,6 +47,8 @@ vim.api.nvim_create_autocmd({'BufNewFile', 'BufRead'}, {
   end
 })
 
+vim.o.cursorline = true
+vim.o.cursorlineopt = 'number'
 vim.o.relativenumber = true
 vim.o.number = true
 vim.o.updatetime = 500
@@ -72,11 +87,6 @@ vim.keymap.set('n', '<C-j>', '<c-w>j')
 vim.keymap.set('n', '<C-k>', '<c-w>k')
 vim.keymap.set('n', '<C-l>', '<c-w>l')
 vim.keymap.set('n', '<C-h>', '<c-w>h')
-
--- disable checks for python; there is no plugin dependency using python
--- this is mostly required for legacy vim plugins that depend on python
--- most plugins nowadays use lua instead.
-vim.g.loaded_python3_provider = 0
 
 if vim.fn.has('termguicolors') then
     vim.o.termguicolors = true
